@@ -1,3 +1,3 @@
 # Lab 7 - Starter
-Sia Sheth \\
-Yiren Zhou \\
+Sia Sheth \
+Yiren Zhou \
