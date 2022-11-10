@@ -101,7 +101,7 @@ function initializeServiceWorker() {
         let response = await fetch(RECIPE_URLS[i]);
         response = await response.json();
         networkRecipes.push(response);
-        if (i == RECIPE_URLS.length) {
+        if (i == RECIPE_URLS.length-1) {
           saveRecipesToStorage(networkRecipes);
           resolve(networkRecipes);
         }
