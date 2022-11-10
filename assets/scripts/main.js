@@ -20,9 +20,7 @@ async function init() {
   // Get the recipes from localStorage
   let recipes;
   try {
-    console.log("before recipes");
     recipes = await getRecipes();
-    console.log("after recipes");
   } catch (err) {
     console.error(err);
   }
@@ -81,10 +79,12 @@ function initializeServiceWorker() {
   // EXPOSE - START (All expose numbers start with A)
   // A1. TODO - Check local storage to see if there are any recipes.
   //            If there are recipes, return them.
-  var recipes = JSON.parse(localStorage.getItem('recipes'));
-  console.log("gotten");
-  if (recipes != [])
-    return recipes;
+  var recipes = localStorage.getItem('recipes');
+  if (recipes) {
+    if (recipes != []) {
+      return JSON.parse(recipes);
+    }
+  }
   /**************************/
   // The rest of this method will be concerned with requesting the recipes
   // from the network
@@ -97,12 +97,10 @@ function initializeServiceWorker() {
   //            you can call to either resolve the Promise or Reject it.
   return new Promise(async (resolve, reject) => {
     for (let i = 0; i < RECIPE_URLS.length; i++) {
-      console.log(i);
       try {
-        const response = await fetch(RECIPE_URLS[i]);
-        console.log(response);
-        networkRecipes.push(await response.json);
-        console.log(networkRecipes);
+        let response = await fetch(RECIPE_URLS[i]);
+        response = await response.json();
+        networkRecipes.push(response);
         if (i == RECIPE_URLS.length) {
           saveRecipesToStorage(networkRecipes);
           resolve(networkRecipes);
